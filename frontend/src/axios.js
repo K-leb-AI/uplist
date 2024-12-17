@@ -139,12 +139,12 @@ export const deleteTodo = async (todoId, collectionId) => {
 };
 
 export const postTodo = async ({ todoData, collectionId }) => {
-  console.log(todoData);
   try {
     const response = await axios.post(
       `${baseUrl}/collections/${collectionId}/todos`,
       todoData
     );
+    console.log(response);
     return response;
   } catch (error) {
     console.log('Something went wrong:', error);

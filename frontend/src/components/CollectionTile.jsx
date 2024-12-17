@@ -12,8 +12,10 @@ const CollectionTile = ({
   onDeleteCollection,
   onClick,
   active,
+  searchData,
 }) => {
   const [incompleteCount, setIncompleteCount] = useState(0);
+
   const handleDelete = async () => {
     try {
       const result = await deleteCollection(collectionId);
@@ -21,22 +23,36 @@ const CollectionTile = ({
       const getResult = await getCollections();
       onDeleteCollection(getResult.data.collections);
     } catch (error) {
-      console.log(error);
+      console.error('Error deleting collection:', error);
+      toast.error('Failed to delete collection');
     }
   };
 
   useEffect(() => {
-    const handleCount = async (id) => {
+    // Filter to count incomplete tasks
+    const handleCount = async () => {
       try {
-        const result = await getTodosInCollection(id);
+        const result = await getTodosInCollection(collectionId);
         const todos = result?.data?.todos || [];
         setIncompleteCount(todos.filter((item) => !item.isCompleted).length);
       } catch (error) {
-        console.error(`Error fetching todos for collection ${id}:`, error);
+        console.error(
+          `Error fetching todos for collection ${collectionId}:`,
+          error
+        );
       }
     };
-    handleCount(collectionId);
-  });
+
+    // Use API call or fallback to searchData filtering
+    if (searchData && searchData.length > 0) {
+      const filteredItems = searchData.filter(
+        (item) => item.collectionId === collectionId && !item.isCompleted
+      );
+      setIncompleteCount(filteredItems.length);
+    } else {
+      handleCount(); // If searchData is unavailable, fetch data
+    }
+  }, [collectionId, searchData]);
 
   return (
     <div
@@ -52,7 +68,6 @@ const CollectionTile = ({
           ? `${collectionName.slice(0, 25)}...`
           : collectionName}
       </p>
-      <p></p>
       <div className='flex gap-2 items-center'>
         <p
           className={`text-sm sm:text-xs rounded-full w-8 aspect-square sm:w-4 flex justify-center items-center ${

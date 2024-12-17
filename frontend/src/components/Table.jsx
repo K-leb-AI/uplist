@@ -33,29 +33,25 @@ const statusTextMap = {
   2: 'Due Today',
 };
 
-export default function CustomTable({ dataArray, activeTodo, setActiveTodo }) {
+export default function CustomTable({
+  dataArray,
+  setDataArray,
+  setActiveTodo,
+}) {
   const params = useParams();
   const collectionId = params.collectionId;
-  const [todos, setTodos] = useState(dataArray);
 
-  useEffect(() => {
-    setTodos(dataArray);
-  }, [dataArray]);
   const handleComplete = async (todoId, isCompleted) => {
     try {
-      // Optimistically update the UI
-      setTodos((prevTodos) =>
+      setDataArray((prevTodos) =>
         prevTodos.map((todo) =>
           todo._id === todoId ? { ...todo, isCompleted } : todo
         )
       );
-
       await updateTodo(todoId, collectionId, { isCompleted: true });
     } catch (error) {
       console.error(error.response?.data?.message || error.message);
-
-      // Revert changes if API call fails
-      setTodos((prevTodos) =>
+      setDataArray((prevTodos) =>
         prevTodos.map((todo) =>
           todo._id === todoId ? { ...todo, isCompleted: false } : todo
         )
@@ -65,8 +61,10 @@ export default function CustomTable({ dataArray, activeTodo, setActiveTodo }) {
 
   const handleDelete = async (todoId) => {
     try {
-      setTodos((prevTodos) => prevTodos.filter((todo) => todo._id !== todoId));
-
+      setDataArray((prevTodos) =>
+        prevTodos.filter((todo) => todo._id !== todoId)
+      );
+      // console.log(todos);
       await deleteTodo(todoId, collectionId);
     } catch (error) {
       console.log(error.response.data.message);
@@ -133,7 +131,7 @@ export default function CustomTable({ dataArray, activeTodo, setActiveTodo }) {
       default:
         return cellValue;
     }
-  }, []);
+  });
 
   return (
     <Table aria-label='Example table with custom cells' className=''>
@@ -152,7 +150,7 @@ export default function CustomTable({ dataArray, activeTodo, setActiveTodo }) {
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody items={todos}>
+      <TableBody items={dataArray}>
         {(item) => (
           <TableRow
             key={item._id}

@@ -8,9 +8,8 @@ import {
   Button,
   useDisclosure,
 } from '@nextui-org/react';
-import { postTodo } from '../axios'; // Ensure this function is correctly implemented
+import { postTodo } from '../axios';
 import toast from 'react-hot-toast';
-import { getTodosInCollection } from '../axios';
 
 const TodoModal = ({ collectionId, setDataArray }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();

@@ -8,7 +8,7 @@ import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import CollectionModal from './CollectionModal';
 
-const Menubar = ({ setActive, activeCollection }) => {
+const Menubar = ({ setActive, activeCollection, searchData }) => {
   const navigate = useNavigate();
   const [allCollections, setAllCollections] = useState([]);
 
@@ -75,6 +75,7 @@ const Menubar = ({ setActive, activeCollection }) => {
                     setActive(collection._id);
                   }}
                   active={activeCollection === collection._id}
+                  searchData={searchData}
                 />
               ))
             ) : (

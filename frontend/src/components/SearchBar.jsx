@@ -4,17 +4,21 @@ import { useParams } from 'react-router-dom';
 import CustomTable from './Table';
 import TodoModal from './TodoModal';
 
-const SearchBar = ({ activeTodo, setActiveTodo }) => {
+const SearchBar = ({ setActiveTodo, setSearchDataPrime }) => {
   const [searchString, setSearchString] = useState('');
   const [searchData, setSearchData] = useState([]);
   const params = useParams();
   const [collectionName, setCollectionName] = useState('');
 
   useEffect(() => {
+    setSearchDataPrime(searchData);
+  }, [searchData]);
+
+  useEffect(() => {
     const fetchTodos = async () => {
       try {
         const result = await getTodosInCollection(params.collectionId);
-        setSearchData(result.data.todos); // Update the data without filtering
+        setSearchData(result.data.todos);
       } catch (error) {
         console.error('Failed to fetch todos:', error);
       }
@@ -30,7 +34,7 @@ const SearchBar = ({ activeTodo, setActiveTodo }) => {
       }
     };
     getCollection();
-  }, [params.collectionId, setSearchData]);
+  }, [params.collectionId]);
 
   const filteredData = searchData.filter((item) => {
     return (
@@ -60,8 +64,8 @@ const SearchBar = ({ activeTodo, setActiveTodo }) => {
         </div>
         <CustomTable
           dataArray={filteredData}
-          activeTodo={activeTodo}
           setActiveTodo={setActiveTodo}
+          setDataArray={setSearchData}
         />
       </div>
     </div>

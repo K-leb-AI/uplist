@@ -16,19 +16,18 @@ const Dashboard = () => {
   useEffect(() => {
     if (selectedCollection !== null)
       navigate(`/dashboard/${selectedCollection}`);
-  }, [selectedCollection, searchData, activeTodo]);
+  }, [selectedCollection, activeTodo]);
 
   return (
     <div className='relative h-screen w-screen grid lg:grid-cols-[23%_54%_23%] sm:grid-cols-[30%_70%] grid-cols-[20%_80%] overflow-x-hidden'>
       <Menubar
         setActive={setSelectedCollection}
         activeCollection={selectedCollection}
+        searchData={searchData}
       />
       <SearchBar
-        searchArray={searchData}
-        setSearchArray={setSearchData}
         setActiveTodo={setActiveTodo}
-        activeTodo={activeTodo}
+        setSearchDataPrime={setSearchData}
       />
       <Details activeTodo={activeTodo} setActiveTodo={setActiveTodo} />
     </div>
