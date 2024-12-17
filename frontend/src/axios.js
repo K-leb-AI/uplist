@@ -115,7 +115,10 @@ export const getTodosInCollection = async (collectionId) => {
 
 export const updateTodo = async (todoId, collectionId, todoData) => {
   try {
-    const response = await axios.put(`${baseUrl}/todos/${todoId}`, todoData);
+    const response = await axios.put(
+      `${baseUrl}/collections/${collectionId}/todos/${todoId}`,
+      todoData
+    );
     return response;
   } catch (error) {
     return error.response.data.message;
