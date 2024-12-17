@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Clock from './Clock';
 import logo from '../assets/logo.png';
-import logoEmblem from '../assets/logoEmblem.png';
+import logoEmblem from '../assets/logoEmblem.svg';
 import CollectionTile from './CollectionTile';
 import { getCollections, logout } from '../axios';
 import toast from 'react-hot-toast';
