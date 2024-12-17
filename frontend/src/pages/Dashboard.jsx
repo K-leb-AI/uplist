@@ -8,7 +8,9 @@ import { useNavigate } from 'react-router-dom';
 const Dashboard = () => {
   const [selectedCollection, setSelectedCollection] = useState(null);
   const [searchData, setSearchData] = useState([]);
-  const [activeTodo, setActiveTodo] = useState({});
+  const [activeTodo, setActiveTodo] = useState({
+    initial: true,
+  });
   const navigate = useNavigate();
 
   useEffect(() => {

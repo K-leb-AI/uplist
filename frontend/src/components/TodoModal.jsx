@@ -42,13 +42,15 @@ const TodoModal = ({ collectionId, setDataArray }) => {
       todoData.description === '' ||
       todoData.due === ''
     ) {
-      toast.error('All fields must be filled');
-      return;
+      return toast.error('All fields must be filled');
     }
 
     setIsLoading(true);
     try {
       const response = await postTodo({ todoData, collectionId });
+      if (collectionId == null || collectionId == '') {
+        return toast.error('You must create a Todo with a collection');
+      }
       if (response.status === 201) {
         setTodoData({
           title: '',

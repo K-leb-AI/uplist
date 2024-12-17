@@ -156,7 +156,7 @@ export default function CustomTable({ dataArray, activeTodo, setActiveTodo }) {
         {(item) => (
           <TableRow
             key={item._id}
-            onClick={() => setActiveTodo(item)}
+            onClick={() => setActiveTodo({ ...item, initial: false })}
             className='cursor-pointer'
           >
             {(columnKey) => (
